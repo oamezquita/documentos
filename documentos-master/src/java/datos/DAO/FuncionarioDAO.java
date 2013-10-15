@@ -108,7 +108,7 @@ public class FuncionarioDAO implements DAOInterface<Funcionario>{
             ResultSet results =   statement.executeQuery();
             if(results.next())
             {
-                entity = new Funcionario();
+                 entity = new Funcionario();
                  entity.setNumeroDocumento(results.getString(1));
                  entity.setNombres(results.getString(2));
                  entity.setApellido1(results.getString(3));

@@ -23,6 +23,10 @@ public class Denuncia {
         this.horaPerdida = horaPerdida;
     }
 
+    public Denuncia() {
+        
+    }
+
     public int getIdDenuncia() {
         return idDenuncia;
     }
