@@ -96,7 +96,8 @@ public class FuncionarioDAO implements DAOInterface<Funcionario>{
 
    
     public Funcionario findById(Object id) {
-            Funcionario entity=null;
+            
+        Funcionario entity=null;
         try {
             Connection c = Conexion.getConexion();
             PreparedStatement statement=

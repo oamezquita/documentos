@@ -7,6 +7,7 @@ package datos.DAO;
 import com.sun.xml.rpc.processor.modeler.j2ee.xml.javaIdentifierType;
 import datos.configuracion.Conexion;
 import datos.entidades.Denuncia;
+import datos.entidades.Funcionario;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -94,19 +95,21 @@ public class DenunciaDAO implements DAOInterface<Denuncia>{
 
     @Override
     public Denuncia findById(Object id) {
-        Denuncia entity = new Denuncia();
+           
+        Denuncia entity =null;
         try {
             Connection c = Conexion.getConexion();
             PreparedStatement statement=
                     c.prepareStatement(
-                    "select denuncia set id_denuncia=?, fecha_denuncia=?,fecha_perdida=?,hora_perdida=? where id_denuncia=?"
+                    "select  id_denuncia,fecha_denuncia,fecha_perdida,hora_perdida from denuncia where id_denuncia=?"
                     );
-            statement.setString(1, (String)id);
+            
+            statement.setInt(1, (Integer)id);
             
             ResultSet results =   statement.executeQuery();
             if(results.next())
             {
-                 
+                 entity = new Denuncia();
                  entity.setIdDenuncia(results.getInt(1));
                  entity.setFechaDenuncia(results.getDate(2));
                  entity.setFechaPerdida(results.getDate(3));
@@ -122,25 +125,72 @@ public class DenunciaDAO implements DAOInterface<Denuncia>{
         }
         
         
-        return entity;
+        return entity;   
         
     }
 
     @Override
     public ArrayList<Denuncia> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+   
+        ArrayList<Denuncia> entities = new ArrayList<Denuncia>();
+        
+            try {
+            Connection c = Conexion.getConexion();
+            PreparedStatement statement=
+                    c.prepareStatement(
+                    "select  id_denuncia,fecha_denuncia,fecha_perdida,hora_perdida from denuncia"
+                    );
+            
+            
+            ResultSet results =   statement.executeQuery();
+            while(results.next())
+            {
+                 Denuncia entity = new Denuncia();
+                 entity.setIdDenuncia(results.getInt(1));
+                 entity.setFechaDenuncia(results.getDate(2));
+                 entity.setFechaPerdida(results.getDate(3));
+                 entity.setHoraPerdida(results.getTime(4));
+                 entities.add(entity);
+            }    
+            
+            c.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        
+        
+        return entities;
     }
      public static void  main(String args[])
     {
-        
-   Calendar c=Calendar.getInstance();
-        c.set(1999,12,10); 
+        Denuncia x;
+         Calendar c=Calendar.getInstance();
+        c.set(1999,12,10);
         java.util.Date w=c.getTime();
         java.sql.Date z= new Date(w.getTime());
-        Time time=new  Time(10, 20, 10);        
-    Denuncia d=new Denuncia(123455,z,z,time);
-    DenunciaDAO dao=new DenunciaDAO();
-   
-      dao.findById(d);
+        Time time=new Time(10, 20, 10); 
+       DenunciaDAO dao=new DenunciaDAO();
+     /*   x=new Denuncia(123,z,z,time);
+        dao.save(x);
+       Denuncia j=dao.findById(123);
+       
+       if(j==null)
+        {
+        System.out.println("No se encontro a nadie con ese documento");
+        }
+        else
+        {
+        System.out.println(j);
+        
+        */
+    ArrayList<Denuncia> y=dao.findAll();
+    for(int i=0;i<y.size();i++)
+    {
+      System.out.println(y.get(i));
     }
-}
+    }
+    
+     }
+

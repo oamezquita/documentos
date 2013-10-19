@@ -8,6 +8,7 @@ import datos.configuracion.Conexion;
 import datos.entidades.Administrador;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -73,24 +74,109 @@ public class AdministradorDAO implements DAOInterface<Administrador>{
 
     @Override
     public void delete(Administrador entity) {
-        
+          try {
+            Connection c = Conexion.getConexion();
+            PreparedStatement statement=
+                    c.prepareStatement("delete from administrador where numero_documento=?");
+            
+            statement.setString(1, entity.getNumeroDocumento());
+           
+            
+            statement.execute();
+            c.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
     }
 
     @Override
     public Administrador findById(Object id) {
-        return null;
+        Administrador entity=null;
+        try {
+            Connection c = Conexion.getConexion();
+            PreparedStatement statement=
+                    c.prepareStatement(
+                    "select numero_documento,login,clave,nombres,apellido1,apellido2 from administrador where numero_documento=?"
+                    );
+            statement.setString(1, (String)id);
+            
+            ResultSet results =   statement.executeQuery();
+            if(results.next())
+            {
+                 entity = new Administrador();
+                 entity.setNumeroDocumento(results.getString(1));
+                 entity.setLogin(results.getString(2));
+                 entity.setClave(results.getString(3));
+                 entity.setNombres(results.getString(4));
+                 entity.setApellido1(results.getString(5));
+                 entity.setApellido2(results.getString(6));
+            }    
+            
+            c.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        
+        
+        return entity;
     }
 
     @Override
     public ArrayList<Administrador> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Administrador> entities = new ArrayList<Administrador>();
+        
+            try {
+            Connection c = Conexion.getConexion();
+            PreparedStatement statement=
+                    c.prepareStatement(
+                    "select numero_documento,login,clave,nombres,apellido1,apellido2 from administrador"
+                    );
+            
+            
+            ResultSet results =   statement.executeQuery();
+            while(results.next())
+            {
+                 Administrador entity = new Administrador();
+                 entity.setNumeroDocumento(results.getString(1));
+                 entity.setLogin(results.getString(2));
+                 entity.setClave(results.getString(3));
+                 entity.setNombres(results.getString(4));
+                 entity.setApellido1(results.getString(5));
+                 entity.setApellido2(results.getString(6));
+                 entities.add(entity);
+            }    
+            
+            c.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        
+        
+        return entities;
     }
  
     public static void  main(String args[])
     {
-    Administrador a=new Administrador("ricardo", "123","1564646","Ricardo","Perez","Juarez");
+   
+        
+     AdministradorDAO dao=new AdministradorDAO();
+   
     
-    AdministradorDAO dao=new AdministradorDAO();
-    dao.save(a);
+   ArrayList<Administrador> y=dao.findAll();
+    for(int i=0;i<y.size();i++)
+    {
+      System.out.println(y.get(i));
     }
-}
+      
+  
+    }
+    
+    
+    
+    }

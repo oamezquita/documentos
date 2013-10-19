@@ -11,6 +11,10 @@ package datos.entidades;
 public class Administrador {
     private String login,clave,numeroDocumento,nombres,apellido1,apellido2;
 
+    public Administrador() {
+        
+    }
+
     public String getLogin() {
         return login;
     }
