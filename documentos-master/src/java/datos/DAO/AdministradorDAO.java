@@ -166,14 +166,17 @@ public class AdministradorDAO implements DAOInterface<Administrador>{
    
         
      AdministradorDAO dao=new AdministradorDAO();
-   
-    
+   Administrador x= new Administrador();
+     x=dao.findById("1564646");
+     
+     System.out.print(x);
+    /*
    ArrayList<Administrador> y=dao.findAll();
     for(int i=0;i<y.size();i++)
     {
       System.out.println(y.get(i));
     }
-      
+      */
   
     }
     
