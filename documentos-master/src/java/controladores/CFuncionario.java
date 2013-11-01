@@ -132,7 +132,26 @@ public class CFuncionario extends HttpServlet {
                 } 
                 */ 
                 }
-                       
+      if(accion.equals("fInicio"))
+      {      
+       dispatcher = request.getRequestDispatcher("WEB-INF/inicioSesionFuncionario.html");
+       dispatcher.forward(request,response);
+      }      
+      if(accion.equals("inicio"))
+              {  
+                  
+          String nDocumento=request.getParameter("numeroDocumento");
+          String clave=request.getParameter("clave"); 
+          
+          Funcionario f=fdao.findById(nDocumento);
+  
+              
+              if(f.getNumeroDocumento()==nDocumento && clave==f.getClave())
+              {
+              out.println();
+              }
+              }
+            
             }
         } finally {            
             out.close();
