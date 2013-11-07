@@ -16,8 +16,8 @@ public class Denuncia {
     private Date fechaDenuncia,fechaPerdida;
     private Time horaPerdida;
 
-    public Denuncia(int idDenuncia, Date fechaDenuncia, Date fechaPerdida, Time horaPerdida) {
-        this.idDenuncia = idDenuncia;
+    public Denuncia( Date fechaDenuncia, Date fechaPerdida, Time horaPerdida) {
+        
         this.fechaDenuncia = fechaDenuncia;
         this.fechaPerdida = fechaPerdida;
         this.horaPerdida = horaPerdida;

@@ -133,22 +133,38 @@ public class CFuncionario extends HttpServlet {
                 */ 
                 }
       if(accion.equals("fInicio"))
-      {      
-       dispatcher = request.getRequestDispatcher("WEB-INF/inicioSesionFuncionario.html");
+      { 
+          Boolean x=true;
+       request.setAttribute("error", x); 
+       dispatcher = request.getRequestDispatcher("WEB-INF/inicioSesionFuncionario.jsp");
        dispatcher.forward(request,response);
       }      
+      
       if(accion.equals("inicio"))
               {  
                   
-          String nDocumento=request.getParameter("numeroDocumento");
-          String clave=request.getParameter("clave"); 
+         String nDocumento=request.getParameter("numeroDocumento");
+         String clave=request.getParameter("clave"); 
+          
+         
           
           Funcionario f=fdao.findById(nDocumento);
-  
+                
               
-              if(f.getNumeroDocumento()==nDocumento && clave==f.getClave())
+             
+              
+              if(f.getNumeroDocumento().equals(nDocumento) && f.getClave().equals(clave))
               {
-              out.println();
+              out.println(f);
+              }
+              else
+              {
+                  boolean x=false;
+             
+             
+              request.setAttribute("error", x); 
+              dispatcher= request.getRequestDispatcher("WEB-INF/vistas/persona/index.jsp");
+              dispatcher.forward(request, response);    
               }
               }
             

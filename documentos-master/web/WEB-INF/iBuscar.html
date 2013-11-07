@@ -7,6 +7,23 @@ and open the template in the editor.
     <head>
         <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+     <script src="js/libs/jquery-1.9.0/jquery.min.js"></script>
+        <script src="js/libs/jquery-validate-1.10.0/jquery.validate.min.js"></script>
+    <style>
+            .error
+            {
+                color:red
+                    
+            }
+            input.error
+            {
+                background-color: #cccccc
+            }
+           
+           
+            
+        </style> 
+    
     </head>
     <body>
       <table BORDER="3" CELLSPACING="5" WIDTH="300"  align="center" >
@@ -35,7 +52,7 @@ and open the template in the editor.
                  required: true,
                  
             },
-          
+                 },
         
                  messages:
                          {
@@ -48,7 +65,7 @@ and open the template in the editor.
                                            
                      
            }     
-                 }
+                 
         }
         );
         

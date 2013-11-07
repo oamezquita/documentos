@@ -25,7 +25,47 @@ import java.util.logging.Logger;
  */
 public class DenunciaDAO implements DAOInterface<Denuncia>{
 
-    @Override
+    
+    
+public int nextId()
+{
+     int entity=0;
+      
+        try {
+            Connection c = Conexion.getConexion();
+            PreparedStatement statement=
+                    c.prepareStatement(
+                    "select  max(id_denuncia) from denuncia"
+                    );
+            
+            
+            
+            ResultSet results =   statement.executeQuery();
+            if(results.next())
+            {
+            
+                 entity=results.getInt(1)+1;
+                 
+                 
+            }    
+            else
+            {
+            entity=1;
+            }
+            c.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
+        }
+        
+        
+
+return entity;
+
+}
+
+@Override
     public boolean save(Denuncia entity) {
         String sql="";
         boolean exito = false;
@@ -37,8 +77,10 @@ public class DenunciaDAO implements DAOInterface<Denuncia>{
             Connection c = Conexion.getConexion();
             PreparedStatement statement=null;
             if(this.findById(entity.getIdDenuncia())==null) 
-            {    
+            { 
+            entity.setIdDenuncia(this.nextId());
              statement=
+                    
                     c.prepareStatement("insert into denuncia values(?,?,?,?)");
             
             statement.setInt(1, entity.getIdDenuncia());
@@ -165,6 +207,17 @@ public class DenunciaDAO implements DAOInterface<Denuncia>{
     }
      public static void  main(String args[])
     {
+        DenunciaDAO dao=new DenunciaDAO();
+        Denuncia x;
+         Calendar c=Calendar.getInstance();
+        c.set(1999,12,10);
+        java.util.Date w=c.getTime();
+        java.sql.Date z= new Date(w.getTime());
+        Time time=new Time(24, 20, 10); 
+         x=new Denuncia(z,z,time);
+         dao.save(x);
+        /*
+    
         Denuncia x;
          Calendar c=Calendar.getInstance();
         c.set(1999,12,10);
@@ -172,7 +225,7 @@ public class DenunciaDAO implements DAOInterface<Denuncia>{
         java.sql.Date z= new Date(w.getTime());
         Time time=new Time(10, 20, 10); 
        DenunciaDAO dao=new DenunciaDAO();
-     /*   x=new Denuncia(123,z,z,time);
+   x=new Denuncia(123,z,z,time);
         dao.save(x);
        Denuncia j=dao.findById(123);
        
@@ -184,12 +237,13 @@ public class DenunciaDAO implements DAOInterface<Denuncia>{
         {
         System.out.println(j);
         
-        */
+      
     ArrayList<Denuncia> y=dao.findAll();
     for(int i=0;i<y.size();i++)
     {
       System.out.println(y.get(i));
     }
+    */
     }
     
      }
