@@ -23,6 +23,12 @@
                 background-color: #cccccc
             }
            
+            li
+            {
+                
+                color:red
+                
+            }
            
             
         </style> 
@@ -38,12 +44,14 @@
                 <form  method="post" id="form1" name="inicioSesion" action="CFuncionario?a=inicio" >
                     
                     <br>Numero de documento: <input type="text" name="numeroDocumento" value=""/><br>
+       
             <br>Contrase&ntildea:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="password" name="clave" value="" /><br>
+            
             <% Boolean error= (Boolean)request.getAttribute("error"); %>
-  <%=error %>
+            <% String login= (String)request.getAttribute("login"); %>
                 <%if(error==false){ %> 
             
-<li>error en contraseña</li>
+<li>error en los datos digitados</li>
                      <% } %>
             <br><input type="submit" name="aceptar" value="aceptar"/> 
             

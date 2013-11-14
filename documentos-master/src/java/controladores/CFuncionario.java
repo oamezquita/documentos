@@ -134,10 +134,19 @@ public class CFuncionario extends HttpServlet {
                 }
       if(accion.equals("fInicio"))
       { 
-          Boolean x=true;
+       if(request.getSession().getAttribute("login")==null){
+       Boolean x=true;
        request.setAttribute("error", x); 
        dispatcher = request.getRequestDispatcher("WEB-INF/inicioSesionFuncionario.jsp");
        dispatcher.forward(request,response);
+       }
+       else
+       {
+             request.setAttribute("login",request.getSession().getAttribute("login"));
+           dispatcher = request.getRequestDispatcher("WEB-INF/paginaInicialPrueba.jsp");
+           dispatcher.forward(request,response);
+       }
+      
       }      
       
       if(accion.equals("inicio"))
@@ -150,24 +159,48 @@ public class CFuncionario extends HttpServlet {
           
           Funcionario f=fdao.findById(nDocumento);
                 
-              
-             
-              
-              if(f.getNumeroDocumento().equals(nDocumento) && f.getClave().equals(clave))
+             if(!(f==null)){ 
+             if(f.getNumeroDocumento().equals(nDocumento) )
               {
-              out.println(f);
-              }
-              else
-              {
-                  boolean x=false;
-             
-             
+                  if(f.getClave().equals(clave)){
+           request.getSession().setAttribute("login",f.getNombres());
+           request.setAttribute("login",request.getSession().getAttribute("login"));
+           dispatcher = request.getRequestDispatcher("WEB-INF/paginaInicialPrueba.jsp");
+           dispatcher.forward(request,response);
+           
+                  }
+                  else{
+                      Boolean x=false; 
+                      
               request.setAttribute("error", x); 
-              dispatcher= request.getRequestDispatcher("WEB-INF/vistas/persona/index.jsp");
-              dispatcher.forward(request, response);    
+              dispatcher= request.getRequestDispatcher("WEB-INF/inicioSesionFuncionario.jsp");
+              dispatcher.forward(request, response);    }   
+              }              
+              
+             }
+            if(f==null)
+             { 
+                 Boolean x=false; 
+              request.setAttribute("error", x);
+              dispatcher= request.getRequestDispatcher("WEB-INF/inicioSesionFuncionario.jsp");
+              dispatcher.forward(request, response);
+             }
+              
               }
-              }
+      
+            if(accion.equals("cerrarSesion"))
+            {
             
+            out.println("cerrando sesion.............");
+            request.getSession().removeAttribute("login");
+            dispatcher= request.getRequestDispatcher("WEB-INF/inicioSesionFuncionario.jsp");
+            dispatcher.forward(request, response);
+            
+            
+            
+            
+           }
+           
             }
         } finally {            
             out.close();
