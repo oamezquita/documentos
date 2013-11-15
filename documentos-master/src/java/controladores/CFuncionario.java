@@ -190,9 +190,11 @@ public class CFuncionario extends HttpServlet {
       
             if(accion.equals("cerrarSesion"))
             {
-            
+                 Boolean x=false; 
             out.println("cerrando sesion.............");
             request.getSession().removeAttribute("login");
+            request.setAttribute("error", x);
+            request.setAttribute("login",request.getSession().getAttribute("login"));
             dispatcher= request.getRequestDispatcher("WEB-INF/inicioSesionFuncionario.jsp");
             dispatcher.forward(request, response);
             
