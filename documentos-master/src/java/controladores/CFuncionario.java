@@ -133,7 +133,8 @@ public class CFuncionario extends HttpServlet {
                 */ 
                 }
       if(accion.equals("fInicio"))
-      { 
+      {
+         
        if(request.getSession().getAttribute("login")==null){
        Boolean x=true;
        request.setAttribute("error", x); 
@@ -162,6 +163,7 @@ public class CFuncionario extends HttpServlet {
              if(!(f==null)){ 
              if(f.getNumeroDocumento().equals(nDocumento) )
               {
+               
                   if(f.getClave().equals(clave)){
            request.getSession().setAttribute("login",f.getNombres());
            request.setAttribute("login",request.getSession().getAttribute("login"));
@@ -188,21 +190,45 @@ public class CFuncionario extends HttpServlet {
               
               }
       
-            if(accion.equals("cerrarSesion"))
+            if(accion.equals("fModificar"))
             {
-                 Boolean x=false; 
-            out.println("cerrando sesion.............");
-            request.getSession().removeAttribute("login");
-            request.setAttribute("error", x);
-            request.setAttribute("login",request.getSession().getAttribute("login"));
-            dispatcher= request.getRequestDispatcher("WEB-INF/inicioSesionFuncionario.jsp");
-            dispatcher.forward(request, response);
+                Boolean x=true; 
+                request.setAttribute("error", x);
+                dispatcher = request.getRequestDispatcher("WEB-INF/inicioModificarFuncionario.jsp");
+                dispatcher.forward(request,response);      
+            }
+           if(accion.equals("modificar"))
+            {
+                
+             String numDocumento=request.getParameter("numeroDocumento");
+             Funcionario f = fdao.findById(numDocumento);
+      
+      if(f==null)
+                {
+                    Boolean x=false; 
+                    request.setAttribute("error", x);
+                    dispatcher = request.getRequestDispatcher("WEB-INF/inicioModificarFuncionario.jsp");
+                    dispatcher.forward(request,response);      
+                }   
+                else
+                {
+                 request.setAttribute("funcionario", f); 
+                 dispatcher = request.getRequestDispatcher("WEB-INF/modificarFuncionario.jsp");
+                 dispatcher.forward(request,response);
+                }               
+              }
+            if(accion.equals("guardarM")){          
+         
+        String nombre=request.getParameter("nombre");
+        String apellido1=request.getParameter("apellidoU");
+        String apellido2=request.getParameter("apellidoD");
+        String nDocumento=request.getParameter("numeroDocumento");
+        String clave=request.getParameter("clave");       
+        Funcionario funcionario=new Funcionario(nDocumento,nombre,apellido1,apellido2,clave);
+        fdao.save(funcionario);
+      
+      }
             
-            
-            
-            
-           }
-           
             }
         } finally {            
             out.close();
